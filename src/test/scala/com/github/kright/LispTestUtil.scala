@@ -7,29 +7,28 @@ private def lispSession(f: LispVm ?=> Unit): Unit = {
   f
 }
 
-def ExpectRuntimeError(code: String)(using vm: LispVm): Unit =
+def expectRuntimeError(code: String)(using vm: LispVm): Unit =
   assert(vm.run(code).isEmpty)
 
-def ExpectSyntaxError(code: String)(using vm: LispVm): Unit =
+def expectSyntaxError(code: String)(using vm: LispVm): Unit =
   assert(vm.run(code).isEmpty)
 
-def ExpectNoError(code: String)(using vm: LispVm): Unit =
+def expectNoError(code: String)(using vm: LispVm): Unit =
   assert(vm.run(code).isDefined)
 
-def ExpectUndefinedVariable(code: String)(using vm: LispVm): Unit =
+def expectUndefinedVariable(code: String)(using vm: LispVm): Unit =
   assert(vm.run(code).isEmpty)
 
-def ExpectEq(code: String, expected: String)(using vm: LispVm): Unit =
+def expectEq(code: String, expected: String)(using vm: LispVm): Unit =
   val result = vm.run(code)
   assert(result.isDefined, "don't get any result!")
   assert(result.get == expected, s"expected '$expected', got '${result.get}' for code ${code}")
 
 trait LispTestSuite:
   self: AnyFunSuite =>
-
-  inline def TEST_F(name: String)(testFun: LispVm ?=> Any /* Assertion */): Unit =
+  inline def testLisp(name: String)(testFun: LispVm ?=> Any /* Assertion */): Unit =
     test(name) {
-      lispSession{ 
-        testFun 
+      lispSession{
+        testFun
       }
     }

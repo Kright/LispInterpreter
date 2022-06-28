@@ -3,45 +3,45 @@ package com.github.kright
 import org.scalatest.funsuite.AnyFunSuite
 
 class SymbolTest extends AnyFunSuite with LispTestSuite:
-  TEST_F("_SymbolsAreNotSelfEvaluating") {
-    ExpectUndefinedVariable("x");
+  testLisp("_SymbolsAreNotSelfEvaluating") {
+    expectUndefinedVariable("x");
 
-    ExpectEq("'x", "x");
-    ExpectEq("(quote x)", "x");
+    expectEq("'x", "x");
+    expectEq("(quote x)", "x");
   }
 
-  TEST_F("_SymbolPredicate") {
-    ExpectEq("(symbol? 'x)", "#t");
-    ExpectEq("(symbol? 1)", "#f");
+  testLisp("_SymbolPredicate") {
+    expectEq("(symbol? 'x)", "#t");
+    expectEq("(symbol? 1)", "#f");
   }
 
-  TEST_F("_SymbolsAreUsedAsVariableNames") {
-    ExpectNoError("(define x (+ 1 2))");
-    ExpectEq("x", "3");
+  testLisp("_SymbolsAreUsedAsVariableNames") {
+    expectNoError("(define x (+ 1 2))");
+    expectEq("x", "3");
 
-    ExpectNoError("(define x (+ 2 2))");
-    ExpectEq("x", "4");
+    expectNoError("(define x (+ 2 2))");
+    expectEq("x", "4");
   }
 
-  TEST_F("_DefineInvalidSyntax") {
-    ExpectSyntaxError("(define)");
-    ExpectSyntaxError("(define 1)");
-    ExpectSyntaxError("(define x 1 2)");
+  testLisp("_DefineInvalidSyntax") {
+    expectSyntaxError("(define)");
+    expectSyntaxError("(define 1)");
+    expectSyntaxError("(define x 1 2)");
   }
 
-  TEST_F("_SetOverrideVariables") {
-    ExpectUndefinedVariable("(set! x 2)");
-    ExpectUndefinedVariable("x");
+  testLisp("_SetOverrideVariables") {
+    expectUndefinedVariable("(set! x 2)");
+    expectUndefinedVariable("x");
 
-    ExpectNoError("(define x 1)");
-    ExpectEq("x", "1");
+    expectNoError("(define x 1)");
+    expectEq("x", "1");
 
-    ExpectNoError("(set! x (+ 2 4))");
-    ExpectEq("x", "6");
+    expectNoError("(set! x (+ 2 4))");
+    expectEq("x", "6");
   }
 
-  TEST_F("_SetInvalidSyntax") {
-    ExpectSyntaxError("(set!)");
-    ExpectSyntaxError("(set! 1)");
-    ExpectSyntaxError("(set! x 1 2)");
+  testLisp("_SetInvalidSyntax") {
+    expectSyntaxError("(set!)");
+    expectSyntaxError("(set! 1)");
+    expectSyntaxError("(set! x 1 2)");
   }

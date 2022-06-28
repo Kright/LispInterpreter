@@ -4,93 +4,93 @@ import org.scalatest.funsuite.AnyFunSuite
 
 class ListTest extends AnyFunSuite with LispTestSuite :
 
-  TEST_F("Quote") {
-    ExpectEq("(quote (1 2))", "(1 2)");
+  testLisp("Quote") {
+    expectEq("(quote (1 2))", "(1 2)");
   }
 
-  TEST_F("_ListsAreNotSelfEvaliating") {
-    ExpectRuntimeError("()")
-    ExpectRuntimeError("(1)")
-    ExpectRuntimeError("(1 2 3)")
+  testLisp("_ListsAreNotSelfEvaliating") {
+    expectRuntimeError("()")
+    expectRuntimeError("(1)")
+    expectRuntimeError("(1 2 3)")
 
-    ExpectEq("'()", "()")
-    ExpectEq("'(1)", "(1)")
-    ExpectEq("'(1 2)", "(1 2)")
+    expectEq("'()", "()")
+    expectEq("'(1)", "(1)")
+    expectEq("'(1 2)", "(1 2)")
   }
 
-  TEST_F("_ListSyntax") {
-    ExpectEq("'(1 . 2)", "(1 . 2)")
-    ExpectSyntaxError("(1 . 2 3)")
+  testLisp("_ListSyntax") {
+    expectEq("'(1 . 2)", "(1 . 2)")
+    expectSyntaxError("(1 . 2 3)")
 
-    ExpectEq("'(1 2 . 3)", "(1 2 . 3)")
-    ExpectEq("'(1 2 . ())", "(1 2)")
-    ExpectEq("'(1 . (2 . ()))", "(1 2)")
+    expectEq("'(1 2 . 3)", "(1 2 . 3)")
+    expectEq("'(1 2 . ())", "(1 2)")
+    expectEq("'(1 . (2 . ()))", "(1 2)")
   }
 
-  TEST_F("ListInvalidSyntax") {
-    ExpectSyntaxError("((1)")
-    ExpectSyntaxError(")(1)")
+  testLisp("ListInvalidSyntax") {
+    expectSyntaxError("((1)")
+    expectSyntaxError(")(1)")
 
-    ExpectSyntaxError("(.)")
-    ExpectSyntaxError("(1 .)")
-    ExpectSyntaxError("(. 2)")
+    expectSyntaxError("(.)")
+    expectSyntaxError("(1 .)")
+    expectSyntaxError("(. 2)")
   }
 
-  TEST_F("PairPredicate") {
-    ExpectEq("(pair? '(1 . 2))", "#t")
-    ExpectEq("(pair? '(1 2))", "#t")
-    ExpectEq("(pair? '())", "#f")
+  testLisp("PairPredicate") {
+    expectEq("(pair? '(1 . 2))", "#t")
+    expectEq("(pair? '(1 2))", "#t")
+    expectEq("(pair? '())", "#f")
   }
 
-  TEST_F("NullPredicate") {
-    ExpectEq("(null? '())", "#t")
-    ExpectEq("(null? '(1 2))", "#f")
-    ExpectEq("(null? '(1 . 2))", "#f")
+  testLisp("NullPredicate") {
+    expectEq("(null? '())", "#t")
+    expectEq("(null? '(1 2))", "#f")
+    expectEq("(null? '(1 . 2))", "#f")
   }
 
-  TEST_F("ListPredicate") {
-    ExpectEq("(list? '())", "#t")
-    ExpectEq("(list? '(1 2))", "#t")
-    ExpectEq("(list? '(1 . 2))", "#f")
-    ExpectEq("(list? '(1 2 3 4 . 5))", "#f")
+  testLisp("ListPredicate") {
+    expectEq("(list? '())", "#t")
+    expectEq("(list? '(1 2))", "#t")
+    expectEq("(list? '(1 . 2))", "#f")
+    expectEq("(list? '(1 2 3 4 . 5))", "#f")
   }
 
-  TEST_F("PairOperations") {
-    ExpectEq("(cons 1 2)", "(1 . 2)")
-    ExpectEq("(car '(1 . 2))", "1")
-    ExpectEq("(cdr '(1 . 2))", "2")
+  testLisp("PairOperations") {
+    expectEq("(cons 1 2)", "(1 . 2)")
+    expectEq("(car '(1 . 2))", "1")
+    expectEq("(cdr '(1 . 2))", "2")
   }
 
-  TEST_F("PairMutations") {
-    ExpectNoError("(define x '(1 . 2))")
+  testLisp("PairMutations") {
+    expectNoError("(define x '(1 . 2))")
 
-    ExpectNoError("(set-car! x 5)")
-    ExpectEq("(car x)", "5")
+    expectNoError("(set-car! x 5)")
+    expectEq("(car x)", "5")
 
-    ExpectNoError("(set-cdr! x 6)")
-    ExpectEq("(cdr x)", "6")
+    expectNoError("(set-cdr! x 6)")
+    expectEq("(cdr x)", "6")
   }
 
-  TEST_F("ListDebug") {
-    ExpectNoError("(define x '(1 2 3))");
+  testLisp("ListDebug") {
+    expectNoError("(define x '(1 2 3))");
 
-    ExpectEq("(list-ref x 0)", "1");
-    ExpectEq("(list-ref x 1)", "2");
-    ExpectEq("(list-ref x 2)", "3");
-    ExpectRuntimeError("(list-ref x 3)");
+    expectEq("(list-ref x 0)", "1");
+    expectEq("(list-ref x 1)", "2");
+    expectEq("(list-ref x 2)", "3");
+    expectRuntimeError("(list-ref x 3)");
   }
 
-  TEST_F("ListOperations") {
-    ExpectEq("(list)", "()")
-    ExpectEq("(list 1)", "(1)")
-    ExpectEq("(list 1 2 3)", "(1 2 3)")
+  testLisp("ListOperations") {
+    expectEq("(list)", "()")
+    expectEq("(list 1)", "(1)")
+    expectEq("(list 1 2 3)", "(1 2 3)")
 
-    ExpectEq("(list-ref '(1 2 3) 1)", "2")
-    ExpectEq("(list-tail '(1 2 3) 1)", "(2 3)")
-    ExpectEq("(list-tail '(1 2 3) 3)", "()")
+    expectEq("(list-ref '(1 2 3) 1)", "2")
+    expectEq("(list-tail '(1 2 3) 1)", "(2 3)")
+    expectEq("(list-tail '(1 2 3) 3)", "()")
 
-    ExpectRuntimeError("(list-ref '(1 2 3) 1 2 3)")
-    ExpectRuntimeError("(list-ref '(1 2 3) 3)")
-    ExpectRuntimeError("(list-ref '(1 2 3) 10)")
-    ExpectRuntimeError("(list-tail '(1 2 3) 10)")
+    expectRuntimeError("(list-ref '(1 2 3) 1 2 3)")
+    expectRuntimeError("(list-ref '(1 2 3) 3)")
+    expectRuntimeError("(list-ref '(1 2 3) 10)")
+    expectRuntimeError("(list-tail '(1 2 3) 10)")
   }
