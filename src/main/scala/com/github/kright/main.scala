@@ -2,30 +2,15 @@ package com.github.kright
 
 @main
 def main(): Unit = {
-  perfFibonacci()
-  return
-
-  println("Hello world!")
-
   val vm = LispVm(debug = true)
 
-//  println(vm.run("((lambda (x) (* x x)) 2)"))
+  println(vm.run("((lambda (x) (* x x)) 2)"))
 
-//  println(vm.run("""(define (f x)
-//                   |  (
-//                   |    do
-//                   |    (define (sqr b) (* b b))
-//                   |    (sqr x)
-//                   |  )
-//                   |)""".stripMargin))
-//  println(vm.run("(f 2)"))
+  println(vm.run(MyCodeExamples.reverseLst))
+  println(vm.run("(reverse-lst '(1 2 3))"))
 
-//  println(vm.run(MyCodeExamples.reverseLst))
-
-//  vm.run(MyCodeExamples.naiveFib)
-//  println(vm.run("(naive-fib 8)"))
-
-//  println(vm.run("(reverse-lst '(1 2 3))"))
+  vm.run(MyCodeExamples.naiveFib)
+  println(vm.run("(naive-fib 8)"))
 }
 
 def perfFibonacci(): Unit = {

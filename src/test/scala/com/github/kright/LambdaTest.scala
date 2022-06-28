@@ -78,3 +78,14 @@ class LambdaTest extends AnyFunSuite with LispTestSuite:
     expectNoError("(define (zero) 0)");
     expectEq("(zero)", "0");
   }
+
+  testLisp("do-notation inside function") {
+    expectNoError("""(define (f x)
+                    |  (
+                    |    do
+                    |    (define (sqr b) (* b b))
+                    |    (sqr x)
+                    |  )
+                    |)""".stripMargin)
+    expectEq("(f 2)", "4")
+  }
