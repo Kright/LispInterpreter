@@ -1,7 +1,13 @@
 package com.github.kright
 
+import com.github.kright.benchmarking.Bench
+import com.github.kright.benchmarking.Benches
+
 @main
 def main(): Unit = {
+//  perfFibonacci()
+//  return
+
   val vm = LispVm(debug = true)
 
   println(vm.run("((lambda (x) (* x x)) 2)"))
@@ -14,20 +20,10 @@ def main(): Unit = {
 }
 
 def perfFibonacci(): Unit = {
-  val vm = new LispVm(debug = false)
-  vm.run(MyCodeExamples.naiveFib)
-
-//  vm.run("(naive-fib 18)")
-//  println(ComboEval.stats)
-//  return
-
-  val results = myBench(1000) { t =>
-    (t, vm.run("(naive-fib 18)"))
-  }
-
+  val results = Benches.naiveFib.run(1000)
   println(s"lisp fib: ${results}")
 
-  val results2 = myBench(1000) { t =>
+  val results2 = Bench(1000) { t =>
     (t, scalaNaiveFib(18))
   }
 
@@ -39,34 +35,3 @@ def scalaNaiveFib(n: Int): Int =
     1
   else
     scalaNaiveFib(n - 1) + scalaNaiveFib(n - 2)
-
-object MyCodeExamples:
-  val lstSize = "(define (lst-size lst) (if (null? lst) 0 (+ 1 (lst-size (cdr lst)))) )"
-  val reverseLst =
-    """(define (reverse-lst lst)
-      |  (do
-      |    (
-      |      define (rev l t)
-      |      (
-      |        if (null? l)
-      |        t
-      |        (rev (cdr l) (cons (car l) t))
-      |      )
-      |    )
-      |    (rev lst '())
-      |  )
-      |)""".stripMargin
-
-  val naiveFib =
-    """
-      |(define (naive-fib n)
-      |  (
-      |    if (< n 2)
-      |    1
-      |    (+
-      |      (naive-fib (- n 1))
-      |      (naive-fib (- n 2))
-      |    )
-      |  )
-      |)
-      |""".stripMargin
